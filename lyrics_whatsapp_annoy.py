@@ -1,3 +1,4 @@
+import os
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
@@ -12,7 +13,6 @@ def split_text_into_chunks(text, max_length):
     current_chunk = ""
 
     for word in words:
-        # If adding the next word exceeds max_length, save the current chunk
         if len(current_chunk) + len(word) + 1 > max_length:  # +1 for space
             chunks.append(current_chunk.strip())  # Append the chunk and strip extra spaces
             current_chunk = word  # Start a new chunk
@@ -24,18 +24,24 @@ def split_text_into_chunks(text, max_length):
 
     return chunks
 
+# Dynamic path setup
+base_dir = os.path.dirname(os.path.abspath(_file_))  # Get current directory
+chrome_profile = os.path.join(base_dir, "Profile")  # Profile folder in current directory
+chromedriver_path = os.path.join(base_dir, "chromedriver.exe")  # Path to chromedriver in current folder
+
 # Selenium setup
 options = webdriver.ChromeOptions()
-options.add_argument("user-data-dir=C:/Users/rsdan/Onedrive/Desktop/whatsapp-automation/Profile")  # New profile directory
-service = Service('chromedriver.exe')
+options.add_argument(f"user-data-dir={chrome_profile}")  # Use dynamic profile folder
+service = Service(chromedriver_path)  # Use dynamic chromedriver path
 driver = webdriver.Chrome(service=service, options=options)
 driver.get("https://web.whatsapp.com/")
 
 wait = WebDriverWait(driver, 300)
-target = '"Auto"'
+target = '"Riddhi"'  # Replace with the name of your target contact
 
 # Read lyrics file
-with open('lyrics.txt', 'r') as lyrics:
+lyrics_path = os.path.join(base_dir, 'lyrics.txt')  # Dynamic path to lyrics file
+with open(lyrics_path, 'r') as lyrics:
     text = lyrics.read()
 
 # Split text into chunks of up to 20 characters without breaking words
@@ -51,4 +57,4 @@ inp_xpath = '//*[@id="main"]/footer/div[1]/div/span/div/div[2]/div[1]/div[2]/div
 for chunk in chunks:
     input_box = wait.until(EC.presence_of_element_located((By.XPATH, inp_xpath)))
     input_box.send_keys(chunk + Keys.ENTER)
-    time.sleep(1.5)  # Delay between messagesfrom selenium import webdriver
+    time.sleep(1.5)  # Delay between messages
