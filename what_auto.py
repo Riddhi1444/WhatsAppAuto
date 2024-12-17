@@ -8,7 +8,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 # Dynamic path setup
-base_dir = os.path.dirname(os.path.abspath(_file_))
+base_dir = os.path.dirname(os.path.abspath(__file__))
 chrome_profile = os.path.join(base_dir, "Profile")
 chromedriver_path = os.path.join(base_dir, "chromedriver.exe")
 
@@ -23,7 +23,7 @@ driver.get("https://web.whatsapp.com/")
 wait = WebDriverWait(driver, 300)
 
 # Target contact and message
-target = '"Riddhi"'
+target = '"Auto"'
 message = "Hello"
 number_of_times = 3
 

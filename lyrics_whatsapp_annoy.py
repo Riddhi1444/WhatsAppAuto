@@ -25,7 +25,7 @@ def split_text_into_chunks(text, max_length):
     return chunks
 
 # Dynamic path setup
-base_dir = os.path.dirname(os.path.abspath(_file_))  # Get current directory
+base_dir = os.path.dirname(os.path.abspath(__file__))  # Get current directory
 chrome_profile = os.path.join(base_dir, "Profile")  # Profile folder in current directory
 chromedriver_path = os.path.join(base_dir, "chromedriver.exe")  # Path to chromedriver in current folder
 
@@ -37,7 +37,7 @@ driver = webdriver.Chrome(service=service, options=options)
 driver.get("https://web.whatsapp.com/")
 
 wait = WebDriverWait(driver, 300)
-target = '"Riddhi"'  # Replace with the name of your target contact
+target = '"Auto"'  # Replace with the name of your target contact
 
 # Read lyrics file
 lyrics_path = os.path.join(base_dir, 'lyrics.txt')  # Dynamic path to lyrics file
