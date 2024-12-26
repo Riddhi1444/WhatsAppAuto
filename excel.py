@@ -1,19 +1,34 @@
 import os
 import time
-import pandas as pd  # Import pandas to read Excel file
+import pandas as pd
+from tkinter import Tk, filedialog  # Import tkinter for file selection
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
+# Function to select Excel file
+def select_excel_file():
+    root = Tk()
+    root.withdraw()  # Hide the root window
+    root.attributes('-topmost', True)  # Bring the dialog to the front
+    file_path = filedialog.askopenfilename(
+        title="Select Excel File",
+        filetypes=[("Excel Files", "*.xlsx;*.xls"), ("All Files", "*.*")]
+    )
+    return file_path
+
 # Dynamic path setup
 base_dir = os.path.dirname(os.path.abspath(__file__))  # Get current directory
 chrome_profile = os.path.join(base_dir, "Profile")  # Profile folder in current directory
 chromedriver_path = os.path.join(base_dir, "chromedriver.exe")  # Path to chromedriver in current folder
 
-# Path to the Excel file
-excel_path = os.path.join(base_dir, "data.xlsx")
+# Ask the user to select the Excel file
+excel_path = select_excel_file()
+if not excel_path:
+    print("No file selected. Exiting.")
+    exit()
 
 # Selenium setup
 options = webdriver.ChromeOptions()
